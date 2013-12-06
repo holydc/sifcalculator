@@ -1,0 +1,67 @@
+#main {
+position:absolute;
+width:960px;
+height:640px;
+}
+
+#unit_page {
+position:absolute;
+background-image:url('bg.png');
+width:960px;
+height:640px;
+}
+
+#member_page {
+position:absolute;
+background-color:green;
+width:960px;
+height:640px;
+display:none;
+}
+
+.member {
+position:absolute;
+top:177px;
+width:96px;
+height:96px;
+background-color:red;
+opacity:0.3;
+cursor:pointer;
+}
+
+#mem_1 {
+left:45px;
+}
+
+#mem_2 {
+left:141px;
+}
+
+#mem_3 {
+left:237px;
+}
+
+#mem_4 {
+left:333px;
+}
+
+#mem_5 {
+left:429px;
+}
+
+#mem_6 {
+left:525px;
+}
+
+#mem_7 {
+left:621px;
+}
+
+#mem_8 {
+left:717px;
+}
+
+#mem_9 {
+left:813px;
+}
+

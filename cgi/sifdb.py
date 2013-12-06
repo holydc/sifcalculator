@@ -95,7 +95,12 @@ class SifParser(html.parser.HTMLParser):
 
     # the first column should be number
     if (self._record[0] != None) and (self._record[0].isdigit()):
-      self._record.append(self._table)
+      self._record.append({
+        'N'  : 1,
+        'R'  : 3,
+        'SR' : 5,
+        'UR' : 7
+      }.get(self._table, None))
       self._records.append(tuple(self._record))
     self._record = None
 
@@ -169,9 +174,15 @@ class SifParser(html.parser.HTMLParser):
 
 #res = urllib.request.urlopen('http://www56.atwiki.jp/bushimolovelive/pages/30.html')
 #body = codecs.decode(res.read())
-page = open('page.txt', 'r')
-body = page.read()
-page.close()
+#print('page loaded, write to file')
+#f = open('sif.txt', 'w')
+#f.write(body)
+#f.close()
+f = open('sif.txt', 'r')
+body = f.read()
+print('page read from file')
+f.close()
 parser = SifParser()
+print('start to parse')
 parser.feed(body)
 
