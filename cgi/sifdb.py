@@ -172,16 +172,20 @@ class SifParser(html.parser.HTMLParser):
           data_ = ''
         self.appendData(data_)
 
-#res = urllib.request.urlopen('http://www56.atwiki.jp/bushimolovelive/pages/30.html')
-#body = codecs.decode(res.read())
-#print('page loaded, write to file')
-#f = open('sif.txt', 'w')
-#f.write(body)
-#f.close()
-f = open('sif.txt', 'r')
-body = f.read()
-print('page read from file')
-f.close()
+
+body = None
+try:
+  f = open('sif.txt', 'r')
+  body = f.read()
+  print('page read from file')
+  f.close()
+except:
+  res = urllib.request.urlopen('http://www56.atwiki.jp/bushimolovelive/pages/30.html')
+  body = codecs.decode(res.read())
+  print('page loaded, write to file')
+  f = open('sif.txt', 'w')
+  f.write(body)
+  f.close()
 parser = SifParser()
 print('start to parse')
 parser.feed(body)

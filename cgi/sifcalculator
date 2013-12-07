@@ -1,4 +1,41 @@
 #! /usr/bin/python3
 
-print('hi')
+import json
+import sqlite3
+
+print('content-type:application/json')
+print('')
+
+conn = sqlite3.connect('sif.db')
+c = conn.cursor()
+c.execute('SELECT * FROM sif ORDER BY _no')
+data = []
+for row in c:
+  r = list(row)
+  for i in range(0, len(r)):
+    if (r[i] == None):
+      r[i] = ''
+  data.append({
+    'no'              : r[0],
+    'img'             : r[1],
+    '_name'           : r[2],
+    'type'            : r[3],
+    'hp'              : r[4],
+    'smile'           : r[5],
+    'pure'            : r[6],
+    'cool'            : r[7],
+    'max_hp'          : r[8],
+    'max_smile'       : r[9],
+    'max_pure'        : r[10],
+    'max_cool'        : r[11],
+    'final_max_hp'    : r[12],
+    'final_max_smile' : r[13],
+    'final_max_pure'  : r[14],
+    'final_max_cool'  : r[15],
+    'skill'           : r[16],
+    'center_skill'    : r[17],
+    'rarity'          : r[18]
+  })
+print(json.dumps(data))
+c.close()
 

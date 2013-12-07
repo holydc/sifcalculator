@@ -8,18 +8,17 @@
 <body>
 <div id="main">
 <div id="unit_page">
-<div class="member" id="mem_1" onclick="changeMemberPage(1);"></div>
-<div class="member" id="mem_2" onclick="changeMemberPage(2);"></div>
-<div class="member" id="mem_3" onclick="changeMemberPage(3);"></div>
-<div class="member" id="mem_4" onclick="changeMemberPage(4);"></div>
-<div class="member" id="mem_5" onclick="changeMemberPage(5);"></div>
-<div class="member" id="mem_6" onclick="changeMemberPage(6);"></div>
-<div class="member" id="mem_7" onclick="changeMemberPage(7);"></div>
-<div class="member" id="mem_8" onclick="changeMemberPage(8);"></div>
-<div class="member" id="mem_9" onclick="changeMemberPage(9);"></div>
+  <div class="status" id="hp">0</div>
+  <div class="status" id="smile">0</div>
+  <div class="status" id="pure">0</div>
+  <div class="status" id="cool">0</div>
 </div>
-<div id="member_page" onclick="changeUnitPage();">
+<div id="member_page">
+  <div class="switch" id="previous_page"><img class="switch_img" id="img_previous" src="img/previous.png" onclick="switchPage(-1);" /></div>
+  <div id="member_list"></div>
+  <div class="switch" id="next_page"><img class="switch_img" id="img_next" src="img/next.png" onclick="switchPage(1);" /></div>
 </div>
+<div id="debug" style="position:absolute;right:0px;top:0px;z-index:10">debug</div>
 </div>
 </body>
 </html>
