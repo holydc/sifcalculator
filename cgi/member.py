@@ -19,7 +19,7 @@ class SifParser(html.parser.HTMLParser):
     # database
     self._db = sqlite3.connect('sif.db')
     c = self._db.cursor()
-    c.execute('DROP TABLE IF EXISTS sif')
+    c.execute('DROP TABLE IF EXISTS member')
     c.execute(
         'CREATE TABLE member('
         '_no INTEGER NOT NULL PRIMARY KEY, '
@@ -49,7 +49,7 @@ class SifParser(html.parser.HTMLParser):
     if (len(self._data) == 0):
       self._data = data
     elif (len(data) > 0):
-      self._data = '%s\n%s' % (self._data, data)
+      self._data = '%s,%s' % (self._data, data)
 
   def appendRowspan(self):
     while len(self._record) in self._rowspan.keys():
