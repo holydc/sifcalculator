@@ -21,7 +21,7 @@ class SifParser(html.parser.HTMLParser):
     c = self._db.cursor()
     c.execute('DROP TABLE IF EXISTS sif')
     c.execute(
-        'CREATE TABLE sif('
+        'CREATE TABLE member('
         '_no INTEGER NOT NULL PRIMARY KEY, '
         'img VARCHAR(255), '
         'name VARCHAR(255) NOT NULL, '
@@ -49,7 +49,7 @@ class SifParser(html.parser.HTMLParser):
     if (len(self._data) == 0):
       self._data = data
     elif (len(data) > 0):
-      self._data = '%s<br />%s' % (self._data, data)
+      self._data = '%s\n%s' % (self._data, data)
 
   def appendRowspan(self):
     while len(self._record) in self._rowspan.keys():
@@ -64,11 +64,11 @@ class SifParser(html.parser.HTMLParser):
     query = None
     if (self._table == 'N'):
       query = (
-          'INSERT INTO sif (_no, img, name, type, stamina, smile, pure, cool, final_max_stamina, final_max_smile, final_max_pure, final_max_cool, rarity) '
+          'INSERT INTO member (_no, img, name, type, stamina, smile, pure, cool, final_max_stamina, final_max_smile, final_max_pure, final_max_cool, rarity) '
           'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
     else:
       query = (
-          'INSERT INTO sif '
+          'INSERT INTO member '
           'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
     c = self._db.cursor()
     for record in self._records:
@@ -175,7 +175,7 @@ class SifParser(html.parser.HTMLParser):
 
 body = None
 try:
-  f = open('sif.txt', 'r')
+  f = open('member.txt', 'r')
   body = f.read()
   print('page read from file')
   f.close()
@@ -183,7 +183,7 @@ except:
   res = urllib.request.urlopen('http://www56.atwiki.jp/bushimolovelive/pages/30.html')
   body = codecs.decode(res.read())
   print('page loaded, write to file')
-  f = open('sif.txt', 'w')
+  f = open('member.txt', 'w')
   f.write(body)
   f.close()
 parser = SifParser()

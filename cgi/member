@@ -8,7 +8,7 @@ print('')
 
 conn = sqlite3.connect('sif.db')
 c = conn.cursor()
-c.execute('SELECT * FROM sif ORDER BY _no')
+c.execute('SELECT * FROM member ORDER BY _no')
 data = []
 for row in c:
   r = list(row)
