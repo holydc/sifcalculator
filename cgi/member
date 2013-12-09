@@ -4,10 +4,14 @@ import cgi
 import json
 import sqlite3
 
+SMILE = 0
+PURE = 1
+COOL = 2
+
 Type = {
-  'スマイル' : 0,
-  'ピュア' : 1,
-  'クール' : 2
+  'スマイル' : SMILE,
+  'ピュア' : PURE,
+  'クール' : COOL
 }
 
 def parse(string):
@@ -54,37 +58,33 @@ try:
     name, description = parse(r[2])
 
     # parse skill
-    skill_name, skill_effect = parse(r[16])
+    skill = parse(r[16])
 
     # parse center skill
-    center_skill_name, center_skill_effect = parse(r[17])
+    center_skill_name = parse(r[17])
+    center_skill_effect = {
+      'スマイルパワー' : (SMILE, 0.03),
+      'ピュアパワー' : (PURE, 0.03),
+      'クールパワー' : (COOL, 0.03),
+      'スマイルハート' : (SMILE, 0.06),
+      'ピュアハート' : (PURE, 0.06),
+      'クールハート' : (COOL, 0.06),
+      'スマイルプリンセス' : (SMILE, 0.09),
+      'ピュアエンジェル' : (PURE, 0.09),
+      'クールエンプレス' : (COOL, 0.09),
+    }.get(center_skill_name[0], (-1, 0.0))
 
     data.append({
       'number' : r[0],
       'img' : r[1],
-      #'_name' : r[2],
-      'charaName' : name,
-      'description' : description,
-      #'type' : r[3],
+      'charaName' : parse(r[2]),
       'type' : Type[r[3]],
-      'hp' : r[4],
-      'smile' : r[5],
-      'pure' : r[6],
-      'cool' : r[7],
-      'maxHp' : r[8],
-      'maxSmile' : r[9],
-      'maxPure' : r[10],
-      'maxCool' : r[11],
-      'finalHp' : r[12],
-      'finalSmile' : r[13],
-      'finalPure' : r[14],
-      'finalCool' : r[15],
-      #'skill' : r[16],
-      'skillName' : skill_name,
-      'skillEffect' : skill_effect,
-      #'centerSkill' : r[17],
-      'centerSkillName' : center_skill_name,
-      'centerSkillEffect' : center_skill_effect,
+      'hp' : (r[4], r[8], r[12]),
+      'smile' : (r[5], r[9], r[13]),
+      'pure' : (r[6], r[10], r[14]),
+      'cool' : (r[7], r[11], r[15]),
+      'skill' : parse(r[16]),
+      'centerSkill' : (center_skill_name[0], center_skill_name[1], center_skill_effect[0], center_skill_effect[1]),
       'rarity' : r[18]
     })
   print(json.dumps(data))

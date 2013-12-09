@@ -18,7 +18,7 @@
   position: absolute;
   top: 48px;
   width: 84px;
-  z-index: 5;
+  z-index: 6;
 }
 
 .switch-page-img {
@@ -86,5 +86,11 @@
 
 .unit-status-text-bonus {
   font-size: 20px;
+}
+
+.live-setting {
+  background: #ff5a99;
+  color: white;
+  font-size: 1.5em;
 }
 
