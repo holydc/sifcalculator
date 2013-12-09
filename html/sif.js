@@ -39,17 +39,18 @@ function switchPage(event) {
 
 function selectMember(event) {
   var member = SIF.members[event.data.index];
+  $('#debug').html('skill: ' + member.skillName + '/' + member.skillEffect + '<br>center: ' + member.centerSkillName + '/' + member.centerSkillEffect);
 
   // update status
-  var hp = Number($('#unit-status-hp-base').text()) + member.final_max_hp;
-  var smile = Number($('#unit-status-smile-base').text()) + member.final_max_smile;
-  var pure = Number($('#unit-status-pure-base').text()) + member.final_max_pure;
-  var cool = Number($('#unit-status-cool-base').text()) + member.final_max_cool;
+  var hp = Number($('#unit-status-hp-base').text()) + member.finalHp;
+  var smile = Number($('#unit-status-smile-base').text()) + member.finalSmile;
+  var pure = Number($('#unit-status-pure-base').text()) + member.finalPure;
+  var cool = Number($('#unit-status-cool-base').text()) + member.finalCool;
   if (SIF.unit[SIF.slot] != null) {
-    hp -= SIF.unit[SIF.slot].final_max_hp;
-    smile -= SIF.unit[SIF.slot].final_max_smile;
-    pure -= SIF.unit[SIF.slot].final_max_pure;
-    cool -= SIF.unit[SIF.slot].final_max_cool;
+    hp -= SIF.unit[SIF.slot].finalHp;
+    smile -= SIF.unit[SIF.slot].finalSmile;
+    pure -= SIF.unit[SIF.slot].finalPure;
+    cool -= SIF.unit[SIF.slot].finalCool;
   }
   $('#unit-status-hp-base').text(hp);
   $('#unit-status-smile-base').text(smile);
@@ -61,7 +62,7 @@ function selectMember(event) {
   $('#unit-member-' + SIF.slot).html('').append(
       $('<img>').addClass('unit-member').attr({
         'src' : member.img,
-        'alt' : member._name
+        'alt' : member.charaName
       }));
 
   // switch page
@@ -108,7 +109,7 @@ function getMembers(req) {
           var y = 132 * row;
           $('#member-list').append(
               $('<img>').attr({
-                'alt' : member._name,
+                'alt' : member.charaName,
                 'src' : member.img
               }).css({
                 'cursor' : 'pointer',
@@ -266,6 +267,6 @@ $(document).ready(function() {
       }));
 
   // read member list
-  getMembers('/cgi-bin/sifcalculator/member');
+  getMembers('/cgi-bin/sifcalculator/member?s=r&o=d');
 });
 

@@ -40,7 +40,7 @@ class SifParser(html.parser.HTMLParser):
         'final_max_cool INTEGER, '
         'skill VARCHAR(255), '
         'center_skill VARCHAR(255), '
-        'rarity VARCHAR(7) NOT NULL'
+        'rarity INTEGER NOT NULL'
         ')')
     self._db.commit()
     c.close()

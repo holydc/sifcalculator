@@ -1,41 +1,94 @@
 #! /usr/bin/python3
 
+import cgi
 import json
 import sqlite3
 
-print('content-type:application/json')
-print('')
+Type = {
+  'スマイル' : 0,
+  'ピュア' : 1,
+  'クール' : 2
+}
 
-conn = sqlite3.connect('sif.db')
-c = conn.cursor()
-c.execute('SELECT * FROM member ORDER BY _no')
-data = []
-for row in c:
-  r = list(row)
-  for i in range(0, len(r)):
-    if (r[i] == None):
-      r[i] = ''
-  data.append({
-    'no'              : r[0],
-    'img'             : r[1],
-    '_name'           : r[2],
-    'type'            : r[3],
-    'hp'              : r[4],
-    'smile'           : r[5],
-    'pure'            : r[6],
-    'cool'            : r[7],
-    'max_hp'          : r[8],
-    'max_smile'       : r[9],
-    'max_pure'        : r[10],
-    'max_cool'        : r[11],
-    'final_max_hp'    : r[12],
-    'final_max_smile' : r[13],
-    'final_max_pure'  : r[14],
-    'final_max_cool'  : r[15],
-    'skill'           : r[16],
-    'center_skill'    : r[17],
-    'rarity'          : r[18]
-  })
-print(json.dumps(data))
-c.close()
+def parse(string):
+  strings = string.split(',')
+  major = strings[0]
+  minor = ''
+  for s in strings[1:]:
+    minor += s
+  return (major, minor)
+
+try:
+  print('content-type:application/json')
+  print('')
+
+  form = cgi.FieldStorage()
+
+  sort = {
+    'n' : '_no',
+    'r' : 'rarity',
+    's' : 'final_max_smile',
+    'p' : 'final_max_pure',
+    'c' : 'final_max_cool',
+    't' : 'type'
+  }.get(form.getvalue('s'), '_no')
+
+  order = {
+    'a' : 'ASC',
+    'd' : 'DESC'
+  }.get(form.getvalue('o'), 'ASC')
+
+  conn = sqlite3.connect('sif.db')
+  c = conn.cursor()
+  query = 'SELECT * FROM member ORDER BY %s %s' % (sort, order)
+  c.execute(query)
+  data = []
+  for row in c:
+    # null value to empty string
+    r = list(row)
+    for i in range(0, len(r)):
+      if (r[i] == None):
+        r[i] = ''
+
+    # parse name
+    name, description = parse(r[2])
+
+    # parse skill
+    skill_name, skill_effect = parse(r[16])
+
+    # parse center skill
+    center_skill_name, center_skill_effect = parse(r[17])
+
+    data.append({
+      'number' : r[0],
+      'img' : r[1],
+      #'_name' : r[2],
+      'charaName' : name,
+      'description' : description,
+      #'type' : r[3],
+      'type' : Type[r[3]],
+      'hp' : r[4],
+      'smile' : r[5],
+      'pure' : r[6],
+      'cool' : r[7],
+      'maxHp' : r[8],
+      'maxSmile' : r[9],
+      'maxPure' : r[10],
+      'maxCool' : r[11],
+      'finalHp' : r[12],
+      'finalSmile' : r[13],
+      'finalPure' : r[14],
+      'finalCool' : r[15],
+      #'skill' : r[16],
+      'skillName' : skill_name,
+      'skillEffect' : skill_effect,
+      #'centerSkill' : r[17],
+      'centerSkillName' : center_skill_name,
+      'centerSkillEffect' : center_skill_effect,
+      'rarity' : r[18]
+    })
+  print(json.dumps(data))
+  c.close()
+except Exception as e:
+  print(e)
 
